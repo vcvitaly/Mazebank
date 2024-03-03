@@ -11,7 +11,7 @@
 
 
 <AnchorPane prefHeight="400.0" prefWidth="600.0" styleClass="login-container"
-            stylesheets="@../../../../styles/login.css" xmlns="http://javafx.com/javafx/21"
+            stylesheets="@../styles/login.css" xmlns="http://javafx.com/javafx/21"
             xmlns:fx="http://javafx.com/fxml/1" fx:controller="io.github.vcvitaly.mazebank.controller.LoginController">
    <VBox prefHeight="400.0" prefWidth="200.0" styleClass="login-logo-container" AnchorPane.bottomAnchor="0.0"
          AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
@@ -26,7 +26,7 @@
       <TextField fx:id="payeeAddressFld" styleClass="input-field"/>
       <Label fx:id="passwordLbl" text="Password:"/>
       <TextField fx:id="passwordFld" styleClass="input-field"/>
-      <Button fx:id="loginBtn" mnemonicParsing="false" text="Button"/>
-      <Label fx:id="errorLbl" styleClass="error-lbl" text="Error:"/>
+      <Button fx:id="loginBtn" mnemonicParsing="false" text="Login"/>
+      <Label fx:id="errorLbl" styleClass="error-lbl"/>
    </VBox>
 </AnchorPane>

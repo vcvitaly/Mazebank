@@ -10,7 +10,7 @@
 
 
 <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="750.0"
-      prefWidth="180.0" styleClass="main-menu-container" stylesheets="@../../../../../styles/client-menu.css"
+      prefWidth="180.0" styleClass="main-menu-container" stylesheets="@../../styles/client-menu.css"
       xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
       fx:controller="io.github.vcvitaly.mazebank.controller.client.ClientMenuController">
    <AnchorPane minHeight="-Infinity" minWidth="-Infinity" prefHeight="730.0" prefWidth="160.0"

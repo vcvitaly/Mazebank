@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.BorderPane?>
+<BorderPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="io.github.vcvitaly.mazebank.controller.client.ClientController">
+    <left>
+        <fx:include source="clientMenu.fxml"/>
+    </left>
+
+    <center>
+        <fx:include source="dashboard.fxml"/>
+    </center>
+</BorderPane>
