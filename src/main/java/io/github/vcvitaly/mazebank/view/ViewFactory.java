@@ -39,6 +39,10 @@ public class ViewFactory {
         createStageAndShow(FxmlResource.CLIENT);
     }
 
+    public void closeStage(Stage stage) {
+        stage.close();
+    }
+
     private void createStageAndShow(FxmlResource fxmlResource) {
         FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlResource.getResourcePath()));
         Scene scene = null;
