@@ -4,6 +4,10 @@ module io.github.vcvitaly.mazebank {
     requires de.jensd.fx.glyphs.fontawesome;
     requires java.sql;
     requires org.xerial.sqlitejdbc;
+    requires org.slf4j;
+    requires org.apache.logging.log4j;
+    requires org.apache.logging.log4j.slf4j.impl;
+    requires static lombok;
 
 
     opens io.github.vcvitaly.mazebank to javafx.fxml;
