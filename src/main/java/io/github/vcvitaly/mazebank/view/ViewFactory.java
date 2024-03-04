@@ -15,6 +15,7 @@ import java.io.IOException;
 public class ViewFactory {
     // Client views
     private volatile AnchorPane dashboardView;
+    private volatile AnchorPane transactionsView;
 
     public AnchorPane getDashboardView() {
         if (dashboardView == null) {
@@ -29,6 +30,21 @@ public class ViewFactory {
             }
         }
         return dashboardView;
+    }
+
+    public AnchorPane getTransactionsView() {
+        if (transactionsView == null) {
+            synchronized (this) {
+                if (transactionsView == null) {
+                    try {
+                        transactionsView = new FXMLLoader(getClass().getResource(FxmlResource.TRANSACTIONS.getResourcePath())).load();
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+            }
+        }
+        return transactionsView;
     }
 
     public void showLoginWindow() {

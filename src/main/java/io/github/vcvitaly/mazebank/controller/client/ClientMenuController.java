@@ -18,4 +18,12 @@ public class ClientMenuController implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
     }
+
+    private void onDashboardBtnClick() {
+
+    }
+
+    private void onTransactionsBtnClick() {
+
+    }
 }

@@ -10,7 +10,8 @@ public enum FxmlResource {
     ADMIN("/fxml/admin/admin.fxml"),
     CLIENT("/fxml/client/client.fxml"),
     CLIENT_MENU("/fxml/client/clientMenu.fxml"),
-    DASHBOARD("/fxml/client/dashboard.fxml");
+    DASHBOARD("/fxml/client/dashboard.fxml"),
+    TRANSACTIONS("/fxml/client/transactions.fxml");
 
     private final String resourcePath;
 }
