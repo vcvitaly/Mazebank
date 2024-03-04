@@ -3,6 +3,7 @@
 <?import javafx.scene.layout.BorderPane?>
 <BorderPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
+            fx:id="clientParent"
             fx:controller="io.github.vcvitaly.mazebank.controller.client.ClientController">
     <left>
         <fx:include source="clientMenu.fxml"/>

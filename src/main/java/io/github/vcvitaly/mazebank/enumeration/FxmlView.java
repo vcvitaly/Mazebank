@@ -5,7 +5,7 @@ import lombok.RequiredArgsConstructor;
 
 @Getter
 @RequiredArgsConstructor
-public enum FxmlResource {
+public enum FxmlView {
     LOGIN("/fxml/login.fxml"),
     ADMIN("/fxml/admin/admin.fxml"),
     CLIENT("/fxml/client/client.fxml"),

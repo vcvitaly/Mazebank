@@ -1,10 +1,13 @@
 package io.github.vcvitaly.mazebank.view;
 
-import io.github.vcvitaly.mazebank.enumeration.FxmlResource;
+import io.github.vcvitaly.mazebank.enumeration.FxmlView;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -14,6 +17,8 @@ import java.io.IOException;
 @Slf4j
 public class ViewFactory {
     // Client views
+    @Getter
+    private final StringProperty clientSelectedMenuItem = new SimpleStringProperty("");
     private volatile AnchorPane dashboardView;
     private volatile AnchorPane transactionsView;
 
@@ -22,7 +27,7 @@ public class ViewFactory {
             synchronized (this) {
                 if (dashboardView == null) {
                     try {
-                        dashboardView = new FXMLLoader(getClass().getResource(FxmlResource.DASHBOARD.getResourcePath())).load();
+                        dashboardView = new FXMLLoader(getClass().getResource(FxmlView.DASHBOARD.getResourcePath())).load();
                     } catch (IOException e) {
                         throw new RuntimeException(e);
                     }
@@ -37,7 +42,7 @@ public class ViewFactory {
             synchronized (this) {
                 if (transactionsView == null) {
                     try {
-                        transactionsView = new FXMLLoader(getClass().getResource(FxmlResource.TRANSACTIONS.getResourcePath())).load();
+                        transactionsView = new FXMLLoader(getClass().getResource(FxmlView.TRANSACTIONS.getResourcePath())).load();
                     } catch (IOException e) {
                         throw new RuntimeException(e);
                     }
@@ -48,19 +53,19 @@ public class ViewFactory {
     }
 
     public void showLoginWindow() {
-        createStageAndShow(FxmlResource.LOGIN);
+        createStageAndShow(FxmlView.LOGIN);
     }
 
     public void showClientWindow() {
-        createStageAndShow(FxmlResource.CLIENT);
+        createStageAndShow(FxmlView.CLIENT);
     }
 
     public void closeStage(Stage stage) {
         stage.close();
     }
 
-    private void createStageAndShow(FxmlResource fxmlResource) {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlResource.getResourcePath()));
+    private void createStageAndShow(FxmlView fxmlView) {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlView.getResourcePath()));
         Scene scene = null;
         try {
             scene = new Scene(loader.load());
