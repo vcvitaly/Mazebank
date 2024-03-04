@@ -17,4 +17,5 @@ module io.github.vcvitaly.mazebank {
     exports io.github.vcvitaly.mazebank.controller.client;
     exports io.github.vcvitaly.mazebank.model;
     exports io.github.vcvitaly.mazebank.view;
+    exports io.github.vcvitaly.mazebank.enumeration;
 }

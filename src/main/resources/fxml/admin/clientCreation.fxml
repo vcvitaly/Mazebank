@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane prefHeight="750.0" prefWidth="850.0" styleClass="client-creation-container" stylesheets="@../../styles/clientCreation.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="io.github.vcvitaly.mazebank.controller.admin.ClientCreationController">
+   <Text layoutX="151.0" layoutY="37.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Create a new client account" AnchorPane.leftAnchor="14.0" AnchorPane.topAnchor="14.0" />
+   <VBox fillWidth="false" layoutX="27.0" layoutY="47.0" prefHeight="700.0" prefWidth="600.0" AnchorPane.leftAnchor="14.0" AnchorPane.topAnchor="40.0">
+      <Text strokeType="OUTSIDE" strokeWidth="0.0" text="First name:" />
+      <TextField fx:id="fNameFld" />
+      <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Last name:" />
+      <TextField fx:id="lNameFld" />
+      <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Password:" />
+      <TextField fx:id="passwordFld" />
+      <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Payee address:" />
+      <CheckBox fx:id="pAddressBox" mnemonicParsing="false" />
+      <Label fx:id="pAddressLbl" styleClass="payee-address-lbl" />
+      <Text layoutX="10.0" layoutY="146.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Accounts:" />
+      <CheckBox fx:id="chAccBox" mnemonicParsing="false" text="Add checking account" />
+      <Text layoutX="10.0" layoutY="198.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Checking account balance:" />
+      <TextField fx:id="chAmountFld" layoutX="10.0" layoutY="108.0" />
+      <CheckBox fx:id="svAccBox" layoutX="10.0" layoutY="202.0" mnemonicParsing="false" text="Add savings account" />
+      <Text layoutX="10.0" layoutY="236.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Savings account balance:" />
+      <TextField fx:id="svAmountFld" layoutX="10.0" layoutY="240.0" />
+      <Button fx:id="createClientBtn" mnemonicParsing="false" text="Create a new client" />
+      <Label fx:id="errorLbl" styleClass="error-lbl" />
+   </VBox>
+</AnchorPane>

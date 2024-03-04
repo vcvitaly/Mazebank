@@ -16,26 +16,36 @@ import java.io.IOException;
 @NoArgsConstructor
 @Slf4j
 public class ViewFactory {
-    // Client views
+    // Client view fields
     @Getter
     private final StringProperty clientSelectedMenuItem = new SimpleStringProperty("");
     private final ViewHolder<AnchorPane> dashboardView = new ViewHolder<>(FxmlView.DASHBOARD);
     private final ViewHolder<AnchorPane> transactionsView = new ViewHolder<>(FxmlView.TRANSACTIONS);
     private final ViewHolder<AnchorPane> accountsView = new ViewHolder<>(FxmlView.ACCOUNTS);
+    // Admin views
+    @Getter
+    private final StringProperty adminSelectedMenuItem = new SimpleStringProperty("");
+    private final ViewHolder<AnchorPane> clientCreationView = new ViewHolder<>(FxmlView.CLIENT_CREATION);
 
+    // Client view section
     public AnchorPane getDashboardView() {
-        return getView(dashboardView);
+        return getOrInitializeView(dashboardView);
     }
 
     public AnchorPane getTransactionsView() {
-        return getView(transactionsView);
+        return getOrInitializeView(transactionsView);
     }
 
     public AnchorPane getAccountsView() {
-        return getView(accountsView);
+        return getOrInitializeView(accountsView);
     }
 
-    private AnchorPane getView(ViewHolder<AnchorPane> view) {
+    // Admin view section
+    public AnchorPane getClientCreationView() {
+        return getOrInitializeView(clientCreationView);
+    }
+
+    private AnchorPane getOrInitializeView(ViewHolder<AnchorPane> view) {
         if (view.view().get() == null) {
             synchronized (view.lock()) {
                 if (view.view().get() == null) {
@@ -51,12 +61,17 @@ public class ViewFactory {
         return view.view().get();
     }
 
+    // Show window section
     public void showLoginWindow() {
         createStageAndShow(FxmlView.LOGIN);
     }
 
     public void showClientWindow() {
         createStageAndShow(FxmlView.CLIENT);
+    }
+
+    public void showAdminWindow() {
+        createStageAndShow(FxmlView.ADMIN);
     }
 
     public void closeStage(Stage stage) {
