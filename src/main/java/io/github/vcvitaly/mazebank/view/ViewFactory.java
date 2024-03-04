@@ -1,14 +1,18 @@
 package io.github.vcvitaly.mazebank.view;
 
-import io.github.vcvitaly.mazebank.enumeration.FxmlView;
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.property.StringProperty;
+import io.github.vcvitaly.mazebank.enumeration.AccountType;
+import io.github.vcvitaly.mazebank.enumeration.AdminFxmlView;
+import io.github.vcvitaly.mazebank.enumeration.ClientFxmlView;
+import io.github.vcvitaly.mazebank.enumeration.MainFxmlView;
+import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
@@ -16,16 +20,19 @@ import java.io.IOException;
 @NoArgsConstructor
 @Slf4j
 public class ViewFactory {
+    @Getter
+    @Setter
+    private AccountType loginAccountType = AccountType.CLIENT;
     // Client view fields
     @Getter
-    private final StringProperty clientSelectedMenuItem = new SimpleStringProperty("");
-    private final ViewHolder<AnchorPane> dashboardView = new ViewHolder<>(FxmlView.DASHBOARD);
-    private final ViewHolder<AnchorPane> transactionsView = new ViewHolder<>(FxmlView.TRANSACTIONS);
-    private final ViewHolder<AnchorPane> accountsView = new ViewHolder<>(FxmlView.ACCOUNTS);
+    private final ObjectProperty<ClientFxmlView> clientSelectedMenuItem = new SimpleObjectProperty<>();
+    private final ViewHolder<AnchorPane> dashboardView = new ViewHolder<>(ClientFxmlView.DASHBOARD);
+    private final ViewHolder<AnchorPane> transactionsView = new ViewHolder<>(ClientFxmlView.TRANSACTIONS);
+    private final ViewHolder<AnchorPane> accountsView = new ViewHolder<>(ClientFxmlView.ACCOUNTS);
     // Admin views
     @Getter
-    private final StringProperty adminSelectedMenuItem = new SimpleStringProperty("");
-    private final ViewHolder<AnchorPane> clientCreationView = new ViewHolder<>(FxmlView.CLIENT_CREATION);
+    private final ObjectProperty<AdminFxmlView> adminSelectedMenuItem = new SimpleObjectProperty<>();
+    private final ViewHolder<AnchorPane> clientCreationView = new ViewHolder<>(AdminFxmlView.CLIENT_CREATION);
 
     // Client view section
     public AnchorPane getDashboardView() {
@@ -63,22 +70,22 @@ public class ViewFactory {
 
     // Show window section
     public void showLoginWindow() {
-        createStageAndShow(FxmlView.LOGIN);
+        createStageAndShow(MainFxmlView.LOGIN);
     }
 
     public void showClientWindow() {
-        createStageAndShow(FxmlView.CLIENT);
+        createStageAndShow(MainFxmlView.CLIENT);
     }
 
     public void showAdminWindow() {
-        createStageAndShow(FxmlView.ADMIN);
+        createStageAndShow(MainFxmlView.ADMIN);
     }
 
     public void closeStage(Stage stage) {
         stage.close();
     }
 
-    private void createStageAndShow(FxmlView fxmlView) {
+    private void createStageAndShow(MainFxmlView fxmlView) {
         FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlView.getResourcePath()));
         Scene scene = null;
         try {
@@ -90,5 +97,6 @@ public class ViewFactory {
         stage.setScene(scene);
         stage.setTitle("Maze Bank");
         stage.show();
+        log.info("Shown " + fxmlView);
     }
 }

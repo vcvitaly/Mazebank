@@ -1,6 +1,6 @@
 package io.github.vcvitaly.mazebank.controller.admin;
 
-import io.github.vcvitaly.mazebank.enumeration.FxmlView;
+import io.github.vcvitaly.mazebank.enumeration.AdminFxmlView;
 import io.github.vcvitaly.mazebank.model.Model;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
@@ -24,10 +24,10 @@ public class AdminMenuController implements Initializable {
     }
     
     private void onClientCreation() {
-        setAdminSelectedMenuItem(FxmlView.CLIENT_CREATION);
+        setAdminSelectedMenuItem(AdminFxmlView.CLIENT_CREATION);
     }
 
-    private void setAdminSelectedMenuItem(FxmlView fxmlView) {
-        Model.getInstance().getViewFactory().getAdminSelectedMenuItem().set(fxmlView.toString());
+    private void setAdminSelectedMenuItem(AdminFxmlView fxmlView) {
+        Model.getInstance().getViewFactory().getAdminSelectedMenuItem().set(fxmlView);
     }
 }

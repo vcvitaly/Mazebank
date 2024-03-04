@@ -1,6 +1,6 @@
 package io.github.vcvitaly.mazebank.controller.client;
 
-import io.github.vcvitaly.mazebank.enumeration.FxmlView;
+import io.github.vcvitaly.mazebank.enumeration.ClientFxmlView;
 import io.github.vcvitaly.mazebank.model.Model;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
@@ -28,18 +28,18 @@ public class ClientMenuController implements Initializable {
     }
 
     private void onDashboard() {
-        setClientSelectedMenuItem(FxmlView.DASHBOARD);
+        setClientSelectedMenuItem(ClientFxmlView.DASHBOARD);
     }
 
     private void onTransactions() {
-        setClientSelectedMenuItem(FxmlView.TRANSACTIONS);
+        setClientSelectedMenuItem(ClientFxmlView.TRANSACTIONS);
     }
 
     private void onAccounts() {
-        setClientSelectedMenuItem(FxmlView.ACCOUNTS);
+        setClientSelectedMenuItem(ClientFxmlView.ACCOUNTS);
     }
 
-    private void setClientSelectedMenuItem(FxmlView fxmlView) {
-        Model.getInstance().getViewFactory().getClientSelectedMenuItem().set(fxmlView.toString());
+    private void setClientSelectedMenuItem(ClientFxmlView fxmlView) {
+        Model.getInstance().getViewFactory().getClientSelectedMenuItem().set(fxmlView);
     }
 }
