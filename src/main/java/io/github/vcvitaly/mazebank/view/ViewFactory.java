@@ -19,37 +19,36 @@ public class ViewFactory {
     // Client views
     @Getter
     private final StringProperty clientSelectedMenuItem = new SimpleStringProperty("");
-    private volatile AnchorPane dashboardView;
-    private volatile AnchorPane transactionsView;
+    private final ViewHolder<AnchorPane> dashboardView = new ViewHolder<>(FxmlView.DASHBOARD);
+    private final ViewHolder<AnchorPane> transactionsView = new ViewHolder<>(FxmlView.TRANSACTIONS);
+    private final ViewHolder<AnchorPane> accountsView = new ViewHolder<>(FxmlView.ACCOUNTS);
 
     public AnchorPane getDashboardView() {
-        if (dashboardView == null) {
-            synchronized (this) {
-                if (dashboardView == null) {
-                    try {
-                        dashboardView = new FXMLLoader(getClass().getResource(FxmlView.DASHBOARD.getResourcePath())).load();
-                    } catch (IOException e) {
-                        throw new RuntimeException(e);
-                    }
-                }
-            }
-        }
-        return dashboardView;
+        return getView(dashboardView);
     }
 
     public AnchorPane getTransactionsView() {
-        if (transactionsView == null) {
-            synchronized (this) {
-                if (transactionsView == null) {
+        return getView(transactionsView);
+    }
+
+    public AnchorPane getAccountsView() {
+        return getView(accountsView);
+    }
+
+    private AnchorPane getView(ViewHolder<AnchorPane> view) {
+        if (view.view().get() == null) {
+            synchronized (view.lock()) {
+                if (view.view().get() == null) {
                     try {
-                        transactionsView = new FXMLLoader(getClass().getResource(FxmlView.TRANSACTIONS.getResourcePath())).load();
+                        view.view().set(new FXMLLoader(getClass().getResource(view.fxmlView().getResourcePath())).load());
+                        log.info("Created a %s view".formatted(view.fxmlView()));
                     } catch (IOException e) {
                         throw new RuntimeException(e);
                     }
                 }
             }
         }
-        return transactionsView;
+        return view.view().get();
     }
 
     public void showLoginWindow() {

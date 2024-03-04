@@ -11,7 +11,8 @@ public enum FxmlView {
     CLIENT("/fxml/client/client.fxml"),
     CLIENT_MENU("/fxml/client/clientMenu.fxml"),
     DASHBOARD("/fxml/client/dashboard.fxml"),
-    TRANSACTIONS("/fxml/client/transactions.fxml");
+    TRANSACTIONS("/fxml/client/transactions.fxml"),
+    ACCOUNTS("/fxml/client/accounts.fxml");
 
     private final String resourcePath;
 }

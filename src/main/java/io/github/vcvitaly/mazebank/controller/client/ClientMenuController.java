@@ -24,6 +24,7 @@ public class ClientMenuController implements Initializable {
     private void addListeners() {
         dashboardBtn.setOnAction(event -> onDashboard());
         transactionBtn.setOnAction(event -> onTransactions());
+        accountsBtn.setOnAction(event -> onAccounts());
     }
 
     private void onDashboard() {
@@ -34,7 +35,11 @@ public class ClientMenuController implements Initializable {
         setClientSelectedMenuItem(FxmlView.TRANSACTIONS);
     }
 
-    private void setClientSelectedMenuItem(FxmlView transactions) {
-        Model.getInstance().getViewFactory().getClientSelectedMenuItem().set(transactions.toString());
+    private void onAccounts() {
+        setClientSelectedMenuItem(FxmlView.ACCOUNTS);
+    }
+
+    private void setClientSelectedMenuItem(FxmlView fxmlView) {
+        Model.getInstance().getViewFactory().getClientSelectedMenuItem().set(fxmlView.toString());
     }
 }
