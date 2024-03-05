@@ -5,8 +5,8 @@ module io.github.vcvitaly.mazebank {
     requires java.sql;
     requires org.xerial.sqlitejdbc;
     requires org.slf4j;
-    requires org.apache.logging.log4j;
-    requires org.apache.logging.log4j.slf4j.impl;
+    requires ch.qos.logback.core;
+    requires ch.qos.logback.classic;
     requires static lombok;
 
 
