@@ -22,6 +22,7 @@ public class AdminMenuController implements Initializable {
     private void addListeners() {
         clientCreationBtn.setOnAction(event -> onClientCreation());
         clientsBtn.setOnAction(event -> onClients());
+        depositBtn.setOnAction(event -> onDeposit());
     }
     
     private void onClientCreation() {
@@ -30,6 +31,10 @@ public class AdminMenuController implements Initializable {
 
     private void onClients() {
         setAdminSelectedMenuItem(AdminFxmlView.CLIENTS);
+    }
+
+    private void onDeposit() {
+        setAdminSelectedMenuItem(AdminFxmlView.DEPOSIT);
     }
 
     private void setAdminSelectedMenuItem(AdminFxmlView fxmlView) {

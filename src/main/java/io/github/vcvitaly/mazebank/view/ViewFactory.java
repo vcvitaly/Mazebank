@@ -34,6 +34,7 @@ public class ViewFactory {
     private final ObjectProperty<AdminFxmlView> adminSelectedMenuItem = new SimpleObjectProperty<>();
     private final ViewHolder<AnchorPane> clientCreationView = new ViewHolder<>(AdminFxmlView.CLIENT_CREATION);
     private final ViewHolder<AnchorPane> clientsView = new ViewHolder<>(AdminFxmlView.CLIENTS);
+    private final ViewHolder<AnchorPane> depositView = new ViewHolder<>(AdminFxmlView.DEPOSIT);
 
     // Client view section
     public AnchorPane getDashboardView() {
@@ -55,6 +56,10 @@ public class ViewFactory {
 
     public AnchorPane getClientsView() {
         return getOrInitializeView(clientsView);
+    }
+
+    public AnchorPane getDepositView() {
+        return getOrInitializeView(depositView);
     }
 
     private AnchorPane getOrInitializeView(ViewHolder<AnchorPane> view) {

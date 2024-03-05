@@ -19,6 +19,7 @@ public class AdminController implements Initializable, AccountTypeHelper {
             switch (newValue) {
                 case CLIENT_CREATION -> adminParent.setCenter(Model.getInstance().getViewFactory().getClientCreationView());
                 case CLIENTS -> adminParent.setCenter(Model.getInstance().getViewFactory().getClientsView());
+                case DEPOSIT -> adminParent.setCenter(Model.getInstance().getViewFactory().getDepositView());
                 default -> throw constructException(newValue);
             }
         });
