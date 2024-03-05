@@ -3,7 +3,7 @@ plugins {
     id 'application'
     id 'org.javamodularity.moduleplugin' version '1.8.12'
     id 'org.openjfx.javafxplugin' version '0.0.13'
-    id 'org.beryx.jlink' version '2.25.0'
+    id 'org.beryx.jlink' version '3.0.1'
     id "io.freefair.lombok" version "8.6"
 }
 
@@ -29,7 +29,7 @@ tasks.withType(JavaCompile) {
 
 application {
     mainModule = 'io.github.vcvitaly.mazebank'
-    mainClass = 'io.github.vcvitaly.mazebank.HelloApplication'
+    mainClass = 'io.github.vcvitaly.mazebank.App'
 }
 
 javafx {
@@ -59,6 +59,7 @@ jlink {
     launcher {
         name = 'app'
     }
+    forceMerge('log4j')
 }
 
 jlinkZip {
