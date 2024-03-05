@@ -21,10 +21,15 @@ public class AdminMenuController implements Initializable {
     
     private void addListeners() {
         clientCreationBtn.setOnAction(event -> onClientCreation());
+        clientsBtn.setOnAction(event -> onClients());
     }
     
     private void onClientCreation() {
         setAdminSelectedMenuItem(AdminFxmlView.CLIENT_CREATION);
+    }
+
+    private void onClients() {
+        setAdminSelectedMenuItem(AdminFxmlView.CLIENTS);
     }
 
     private void setAdminSelectedMenuItem(AdminFxmlView fxmlView) {
