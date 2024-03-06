@@ -4,6 +4,7 @@ import io.github.vcvitaly.mazebank.enumeration.AccountType;
 import io.github.vcvitaly.mazebank.enumeration.AdminFxmlView;
 import io.github.vcvitaly.mazebank.enumeration.ClientFxmlView;
 import io.github.vcvitaly.mazebank.enumeration.MainFxmlView;
+import io.github.vcvitaly.mazebank.util.FxmlLoaderUtil;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.fxml.FXMLLoader;
@@ -67,7 +68,7 @@ public class ViewFactory {
             synchronized (view.lock()) {
                 if (view.view().get() == null) {
                     try {
-                        view.view().set(new FXMLLoader(getClass().getResource(view.fxmlView().getResourcePath())).load());
+                        view.view().set(FxmlLoaderUtil.createFxmlLoader(view.fxmlView()).load());
                         log.info("Created a %s view".formatted(view.fxmlView()));
                     } catch (IOException e) {
                         throw new RuntimeException(e);
@@ -96,7 +97,7 @@ public class ViewFactory {
     }
 
     private void createStageAndShow(MainFxmlView fxmlView) {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlView.getResourcePath()));
+        FXMLLoader loader = FxmlLoaderUtil.createFxmlLoader(fxmlView);
         Scene scene = null;
         try {
             scene = new Scene(loader.load());

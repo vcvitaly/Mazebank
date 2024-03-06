@@ -1,5 +1,6 @@
 package io.github.vcvitaly.mazebank.controller.admin;
 
+import io.github.vcvitaly.mazebank.model.Client;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.fxml.Initializable;
@@ -14,6 +15,12 @@ public class ClientCellController implements Initializable {
     public Label svAccountLbl;
     public Label dateLbl;
     public Button deleteBtn;
+
+    private final Client client;
+
+    public ClientCellController(Client client) {
+        this.client = client;
+    }
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
