@@ -8,6 +8,6 @@ import lombok.experimental.UtilityClass;
 public class FxmlLoaderUtil {
 
     public static FXMLLoader createFxmlLoader(FxmlView fxmlView) {
-        return new FXMLLoader(FxmlLoaderUtil.class.getResource(fxmlView.getResourcePath()));
+        return new FXMLLoader(ResourceUtil.getResource(fxmlView.getResourcePath()));
     }
 }

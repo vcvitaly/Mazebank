@@ -3,12 +3,15 @@ package io.github.vcvitaly.mazebank.view;
 import io.github.vcvitaly.mazebank.enumeration.AccountType;
 import io.github.vcvitaly.mazebank.enumeration.AdminFxmlView;
 import io.github.vcvitaly.mazebank.enumeration.ClientFxmlView;
+import io.github.vcvitaly.mazebank.enumeration.ImageResource;
 import io.github.vcvitaly.mazebank.enumeration.MainFxmlView;
 import io.github.vcvitaly.mazebank.util.FxmlLoaderUtil;
+import io.github.vcvitaly.mazebank.util.ResourceUtil;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import lombok.Getter;
@@ -106,6 +109,12 @@ public class ViewFactory {
         }
         Stage stage = new Stage();
         stage.setScene(scene);
+        stage.getIcons().add(
+                new Image(
+                        ResourceUtil.getResource(ImageResource.APP_ICON.getResourcePath()).toString()
+                )
+        );
+        stage.setResizable(false);
         stage.setTitle("Maze Bank");
         stage.show();
         log.info("Shown " + fxmlView);
