@@ -1,0 +1,37 @@
+.cell-container {
+    -fx-background-color: #FFFFFF;
+    -fx-background-radius: 10;
+    -fx-effect: dropshadow(three-pass-box, #DDDDDD, 5, 0, 0, 7);
+}
+
+.cell-container Line {
+    -fx-stroke: #EEEEEE;
+}
+
+.transaction-icon-container {
+    -fx-background-color: #FFFFFF;
+    -fx-alignment: center;
+    -fx-spacing: 5;
+}
+
+.transaction-date-lbl {
+    -fx-text-fill: #AAAAAA;
+    -fx-font-weight: 700;
+}
+
+.transaction-payee-address-lbl {
+    -fx-text-fill: #000000;
+    -fx-font-weight: 700;
+}
+
+.transaction-amount-lbl {
+    -fx-background-color: #132A13;
+    -fx-background-radius: 2;
+    -fx-text-fill: #FFFFFF;
+    -fx-padding: 5;
+    -fx-font-weight: 700;
+}
+
+.transaction-amount-lbl FontAwesomeIconView {
+    -fx-fill: #FFFFFF;
+}
