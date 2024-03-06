@@ -19,11 +19,11 @@ public class Client {
     public Client(
             String firstName, String lastName, String payeeAddress,
             Account checkingAccount, Account savingAccount, LocalDate dateCreated) {
-        this.firstName = new SimpleStringProperty(firstName);
-        this.lastName = new SimpleStringProperty(lastName);
-        this.payeeAddress = new SimpleStringProperty(payeeAddress);
-        this.checkingAccount = new SimpleObjectProperty<>(checkingAccount);
-        this.savingAccount = new SimpleObjectProperty<>(savingAccount);
-        this.dateCreated = new SimpleObjectProperty<>(dateCreated);
+        this.firstName = new SimpleStringProperty(this, "firstName", firstName);
+        this.lastName = new SimpleStringProperty(this, "lastName", lastName);
+        this.payeeAddress = new SimpleStringProperty(this, "payeeAddress", payeeAddress);
+        this.checkingAccount = new SimpleObjectProperty<>(this, "checkingAccount", checkingAccount);
+        this.savingAccount = new SimpleObjectProperty<>(this, "savingAccount", savingAccount);
+        this.dateCreated = new SimpleObjectProperty<>(this, "dateCreated", dateCreated);
     }
 }

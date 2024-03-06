@@ -18,10 +18,10 @@ public class Transaction {
     private final StringProperty message;
 
     public Transaction(String sender, String receiver, double amount, LocalDate date, String message) {
-        this.sender = new SimpleStringProperty(sender);
-        this.receiver = new SimpleStringProperty(receiver);
-        this.amount = new SimpleDoubleProperty(amount);
-        this.date = new SimpleObjectProperty<>(date);
-        this.message = new SimpleStringProperty(message);
+        this.sender = new SimpleStringProperty(this, "sender", sender);
+        this.receiver = new SimpleStringProperty(this, "receiver", receiver);
+        this.amount = new SimpleDoubleProperty(this, "amount", amount);
+        this.date = new SimpleObjectProperty<>(this, "date", date);
+        this.message = new SimpleStringProperty(this, "message", message);
     }
 }
