@@ -1,0 +1,39 @@
+.client-cell-container {
+    -fx-background-color: #FFFFFF;
+    -fx-background-radius: 10;
+    -fx-effect: dropshadow(three-pass-box, #DDDDDD, 5, 0, 0, 5);
+}
+
+.client-cell-container FontAwesomeIconView {
+    -fx-fill: #132A13;
+}
+
+.client-cell-container HBox {
+    -fx-spacing: 15;
+    -fx-alignment: center_left;
+}
+
+.client-cell-container HBox Label {
+    -fx-text-fill: #444444;
+    -fx-font-family: 'Arial';
+    -fx-font-size: 1.5em;
+}
+
+.account-display-lbl {
+    -fx-font-family: 'Arial';
+    -fx-font-weight: bold;
+    -fx-font-size: 1.1em;
+}
+
+.delete-btn {
+    -fx-text-fill: #FFFFFF;
+    -fx-background-color: #FF0000;
+}
+
+.delete-btn FontAwesomeIconView {
+    -fx-fill: #FFFFFF;
+}
+
+.delete-btn:hover {
+    -fx-cursor: hand;
+}
