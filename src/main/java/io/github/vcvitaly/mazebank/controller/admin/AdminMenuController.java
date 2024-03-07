@@ -7,6 +7,7 @@ import javafx.scene.control.Button;
 
 import java.net.URL;
 import java.util.ResourceBundle;
+import javafx.stage.Stage;
 
 public class AdminMenuController implements Initializable {
     public Button clientCreationBtn;
@@ -23,6 +24,7 @@ public class AdminMenuController implements Initializable {
         clientCreationBtn.setOnAction(event -> onClientCreation());
         clientsBtn.setOnAction(event -> onClients());
         depositBtn.setOnAction(event -> onDeposit());
+        logoutBtn.setOnAction(event -> onLogout());
     }
     
     private void onClientCreation() {
@@ -35,6 +37,12 @@ public class AdminMenuController implements Initializable {
 
     private void onDeposit() {
         setAdminSelectedMenuItem(AdminFxmlView.DEPOSIT);
+    }
+
+    private void onLogout() {
+        Stage stage = (Stage) clientsBtn.getScene().getWindow();
+        Model.getInstance().getViewFactory().closeStage(stage);
+        Model.getInstance().getViewFactory().showLoginWindow();
     }
 
     private void setAdminSelectedMenuItem(AdminFxmlView fxmlView) {

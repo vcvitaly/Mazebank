@@ -7,6 +7,7 @@ import javafx.scene.control.Button;
 
 import java.net.URL;
 import java.util.ResourceBundle;
+import javafx.stage.Stage;
 
 public class ClientMenuController implements Initializable {
     public Button dashboardBtn;
@@ -25,6 +26,7 @@ public class ClientMenuController implements Initializable {
         dashboardBtn.setOnAction(event -> onDashboard());
         transactionBtn.setOnAction(event -> onTransactions());
         accountsBtn.setOnAction(event -> onAccounts());
+        logoutBtn.setOnAction(event -> onLogout());
     }
 
     private void onDashboard() {
@@ -37,6 +39,12 @@ public class ClientMenuController implements Initializable {
 
     private void onAccounts() {
         setClientSelectedMenuItem(ClientFxmlView.ACCOUNTS);
+    }
+
+    private void onLogout() {
+        Stage stage = (Stage) dashboardBtn.getScene().getWindow();
+        Model.getInstance().getViewFactory().closeStage(stage);
+        Model.getInstance().getViewFactory().showLoginWindow();
     }
 
     private void setClientSelectedMenuItem(ClientFxmlView fxmlView) {
