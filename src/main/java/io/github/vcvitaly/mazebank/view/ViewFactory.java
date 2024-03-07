@@ -101,7 +101,7 @@ public class ViewFactory {
 
     private void createStageAndShow(MainFxmlView fxmlView) {
         FXMLLoader loader = FxmlLoaderUtil.createFxmlLoader(fxmlView);
-        Scene scene = null;
+        Scene scene;
         try {
             scene = new Scene(loader.load());
         } catch (IOException e) {

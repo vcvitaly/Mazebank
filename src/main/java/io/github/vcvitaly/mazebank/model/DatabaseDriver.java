@@ -2,7 +2,9 @@ package io.github.vcvitaly.mazebank.model;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 
 public class DatabaseDriver {
     private Connection conn;
@@ -18,6 +20,19 @@ public class DatabaseDriver {
     /*
     * Client section
     * */
+    public ResultSet getClientData(String payeeAddress, String password) {
+        Statement statement;
+        ResultSet resultSet;
+        try {
+            statement = conn.createStatement();
+            resultSet = statement.executeQuery(
+                            "SELECT * FROM Clients WHERE PayeeAddress = '%s' AND Password = '%s'".formatted(payeeAddress, password)
+                    );
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return resultSet;
+    }
 
     /*
     * Admin section
