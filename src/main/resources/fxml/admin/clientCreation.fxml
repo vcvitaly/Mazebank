@@ -8,6 +8,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Text?>
 
+<?import javafx.scene.control.PasswordField?>
 <AnchorPane prefHeight="750.0" prefWidth="850.0" styleClass="client-creation-container" stylesheets="@../../styles/client-creation.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="io.github.vcvitaly.mazebank.controller.admin.ClientCreationController">
    <Text layoutX="151.0" layoutY="37.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Create a new client account" AnchorPane.leftAnchor="14.0" AnchorPane.topAnchor="14.0" />
    <VBox fillWidth="false" layoutX="27.0" layoutY="47.0" prefHeight="700.0" prefWidth="600.0" AnchorPane.leftAnchor="14.0" AnchorPane.topAnchor="40.0">
@@ -16,7 +17,7 @@
       <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Last name:" />
       <TextField fx:id="lNameFld" />
       <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Password:" />
-      <TextField fx:id="passwordFld" />
+      <PasswordField fx:id="passwordFld" />
       <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Payee address:" />
       <CheckBox fx:id="pAddressBox" mnemonicParsing="false" />
       <Label fx:id="pAddressLbl" styleClass="payee-address-lbl" />

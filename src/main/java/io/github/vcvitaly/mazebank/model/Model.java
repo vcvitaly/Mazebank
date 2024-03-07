@@ -14,6 +14,7 @@ import lombok.extern.slf4j.Slf4j;
 public class Model {
     @Getter
     private final ViewFactory viewFactory;
+    @Getter
     private final DatabaseDriver databaseDriver;
     // Client data section
     @Getter
