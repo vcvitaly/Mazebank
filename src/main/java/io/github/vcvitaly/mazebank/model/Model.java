@@ -99,6 +99,21 @@ public class Model {
         }
     }
 
+    public void sendMoney(String receiver, double amount, String message) {
+        final String sender = client.getPayeeAddress().get();
+        try (final ResultSet resultSet = databaseDriver.searchClient(receiver)) {
+            if (resultSet.isBeforeFirst()) {
+                if (databaseDriver.subtractFromBalance(sender, amount)) {
+                    client.getSavingAccount().get().setBalance(databaseDriver.getSavingAccountBalance(sender));
+                    databaseDriver.addToBalance(receiver, amount);
+                    databaseDriver.createNewTransaction(sender, receiver, amount, message);
+                }
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     // Admin method section
     public boolean evaluateAdminCredentials(String username, String password) {
         ResultSet resultSet = databaseDriver.getAdminData(username, password);

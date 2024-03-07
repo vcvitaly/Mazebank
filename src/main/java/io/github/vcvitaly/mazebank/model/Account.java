@@ -10,11 +10,15 @@ import lombok.Getter;
 public abstract class Account {
     private final StringProperty owner;
     private final StringProperty accountNumber;
-    private final DoubleProperty balance;
+    private DoubleProperty balance;
 
     public Account(String owner, String accountNumber, double balance) {
         this.owner = new SimpleStringProperty(this, "owner", owner);
         this.accountNumber = new SimpleStringProperty(this, "accountNumber", accountNumber);
         this.balance = new SimpleDoubleProperty(this, "balance", balance);
+    }
+
+    public void setBalance(double balance) {
+        this.balance.set(balance);
     }
 }
