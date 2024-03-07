@@ -5,6 +5,7 @@ import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
+import lombok.Builder;
 import lombok.Getter;
 
 @Getter
@@ -16,6 +17,7 @@ public class Client {
     private final ObjectProperty<Account> savingAccount;
     private final ObjectProperty<LocalDate> dateCreated;
 
+    @Builder
     public Client(
             String firstName, String lastName, String payeeAddress,
             Account checkingAccount, Account savingAccount, LocalDate dateCreated) {

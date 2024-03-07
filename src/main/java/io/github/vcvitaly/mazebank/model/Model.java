@@ -1,13 +1,15 @@
 package io.github.vcvitaly.mazebank.model;
 
-import io.github.vcvitaly.mazebank.enumeration.AccountType;
-import io.github.vcvitaly.mazebank.exception.MalformedClientDataException;
+import io.github.vcvitaly.mazebank.util.DateUtil;
 import io.github.vcvitaly.mazebank.view.ViewFactory;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
+import java.util.HashMap;
+import java.util.Map;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import lombok.Getter;
-import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -19,6 +21,9 @@ public class Model {
     // Client data section
     @Getter
     private final Client client;
+    // Admin section data
+    @Getter
+    private final ObservableList<Client> clients;
 
     private Model() {
         viewFactory = new ViewFactory();
@@ -26,6 +31,7 @@ public class Model {
         // Client data section
         client = new Client("", "", "", null, null, null);
         // Admin data section
+        clients = FXCollections.observableArrayList();
     }
 
     // Client method section
@@ -38,17 +44,12 @@ public class Model {
                 client.getFirstName().set(resultSet.getString("FirstName"));
                 client.getLastName().set(resultSet.getString("LastName"));
                 client.getPayeeAddress().set(resultSet.getString("PayeeAddress"));
-                final String dateStr = resultSet.getString("Date");
-                final String[] dateParts = dateStr.split("-");
-                if (dateParts.length != 3) {
-                    throw new MalformedClientDataException("Invalid date format: " + dateStr);
-                }
-                final LocalDate date = LocalDate.of(
-                        Integer.parseInt(dateParts[0]),
-                        Integer.parseInt(dateParts[1]),
-                        Integer.parseInt(dateParts[2])
-                );
+                final LocalDate date = DateUtil.parseDate(resultSet.getString("Date"));
                 client.getDateCreated().set(date);
+                checkingAccount = extractCheckingAccount(databaseDriver.getCheckingAccountData(payeeAddress));
+                savingAccount = extractSavingAccount(databaseDriver.getSavingAccountData(payeeAddress));
+                client.getCheckingAccount().set(checkingAccount);
+                client.getSavingAccount().set(savingAccount);
                 return true;
             } else {
                 log.error("Unknown client: " + payeeAddress);
@@ -72,6 +73,103 @@ public class Model {
             throw new RuntimeException(e);
         }
         return false;
+    }
+
+    public void setClients() {
+        CheckingAccount checkingAccount;
+        SavingAccount savingAccount;
+        try (final ResultSet clientsRs = databaseDriver.getAllClientData();
+             final ResultSet checkingAccountsRs = databaseDriver.getAllCheckingAccountData();
+             final ResultSet savingAccountsRs = databaseDriver.getAllSavingAccountData()) {
+            final Map<String, CheckingAccount> checkingAccountByPayeeAddress = extractCheckingAccounts(checkingAccountsRs);
+            final Map<String, SavingAccount> savingAccountByPayeeAddress = extractSavingAccounts(savingAccountsRs);
+            while (clientsRs.next()) {
+                final String firstName = clientsRs.getString("FirstName");
+                final String lastName = clientsRs.getString("LastName");
+                final String payeeAddress = clientsRs.getString("PayeeAddress");
+                final LocalDate dateCreated = DateUtil.parseDate(clientsRs.getString("Date"));
+                checkingAccount = checkingAccountByPayeeAddress.get(payeeAddress);
+                savingAccount = savingAccountByPayeeAddress.get(payeeAddress);
+                clients.add(
+                        Client.builder()
+                                .firstName(firstName)
+                                .lastName(lastName)
+                                .payeeAddress(payeeAddress)
+                                .checkingAccount(checkingAccount)
+                                .savingAccount(savingAccount)
+                                .dateCreated(dateCreated)
+                                .build()
+                );
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private Map<String, CheckingAccount> extractCheckingAccounts(ResultSet resultSet) {
+        Map<String, CheckingAccount> checkingAccountByPayeeAddress = new HashMap<>();
+        try {
+            while (resultSet.next()) {
+                final CheckingAccount checkingAccount = extractCheckingAccount(resultSet);
+                checkingAccountByPayeeAddress.put(
+                        checkingAccount.getOwner().getValue(),
+                        checkingAccount
+                );
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return checkingAccountByPayeeAddress;
+    }
+
+    private Map<String, SavingAccount> extractSavingAccounts(ResultSet resultSet) {
+        Map<String, SavingAccount> savingAccountByPayeeAddress = new HashMap<>();
+        try {
+            while (resultSet.next()) {
+                final SavingAccount savingAccount = extractSavingAccount(resultSet);
+                savingAccountByPayeeAddress.put(
+                        savingAccount.getOwner().getValue(),
+                        savingAccount
+                );
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return savingAccountByPayeeAddress;
+    }
+
+    private CheckingAccount extractCheckingAccount(ResultSet resultSet) {
+        try {
+            final String accountNumber = resultSet.getString("AccountNumber");
+            final int transactionNumLimit = (int) resultSet.getDouble("TransactionLimit");
+            final double balance = resultSet.getDouble("Balance");
+            final String owner = resultSet.getString("Owner");
+            return CheckingAccount.builder()
+                    .owner(owner)
+                    .accountNumber(accountNumber)
+                    .balance(balance)
+                    .transactionNumLimit(transactionNumLimit)
+                    .build();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private SavingAccount extractSavingAccount(ResultSet resultSet) {
+        try {
+            final String accountNumber = resultSet.getString("AccountNumber");
+            final double withdrawalLimit = resultSet.getDouble("WithdrawalLimit");
+            final double balance = resultSet.getDouble("Balance");
+            final String owner = resultSet.getString("Owner");
+            return SavingAccount.builder()
+                    .owner(owner)
+                    .accountNumber(accountNumber)
+                    .balance(balance)
+                    .withdrawalLimit(withdrawalLimit)
+                    .build();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public static Model getInstance() {

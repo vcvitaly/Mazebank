@@ -22,83 +22,91 @@ public class DatabaseDriver {
     * Client section
     * */
     public ResultSet getClientData(String payeeAddress, String password) {
-        return getLoginData(payeeAddress, password, "SELECT * FROM Clients WHERE PayeeAddress = '%s' AND Password = '%s'");
+        return executeSelect("SELECT * FROM Clients WHERE PayeeAddress = '%s' AND Password = '%s'".formatted(payeeAddress, password));
     }
 
     /*
     * Admin section
     * */
     public ResultSet getAdminData(String username, String password) {
-        return getLoginData(username, password, "SELECT * FROM Admins WHERE Username = '%s' AND Password = '%s'");
+        return executeSelect("SELECT * FROM Admins WHERE Username = '%s' AND Password = '%s'".formatted(username, password));
     }
 
     public void createClient(String firstName, String lastName, String payeeAddress, String password, LocalDate date) {
-        Statement statement;
-        try {
-            statement = conn.createStatement();
-            statement.executeUpdate(
-            """
-            INSERT INTO Clients(FirstName, LastName, PayeeAddress, Password, Date)
-            VALUES('%s', '%s', '%s', '%s', '%s')
-            """.formatted(firstName, lastName, payeeAddress, password, date.toString())
-            );
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
+        executeUpdate(
+                """
+                INSERT INTO Clients(FirstName, LastName, PayeeAddress, Password, Date)
+                VALUES('%s', '%s', '%s', '%s', '%s')
+                """.formatted(firstName, lastName, payeeAddress, password, date.toString())
+        );
     }
 
     public void createCheckingAccount(String owner, String accountNumber, double transactionNumLimit, double balance) {
-        Statement statement;
-        try {
-            statement = conn.createStatement();
-            statement.executeUpdate(
-            """
-            INSERT INTO CheckingAccounts(Owner, AccountNumber, TransactionLimit, Balance)
-            VALUES('%s', '%s', %f, %f)
-            """.formatted(owner, accountNumber, transactionNumLimit, balance)
-            );
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
+        executeUpdate(
+                """
+                INSERT INTO CheckingAccounts(Owner, AccountNumber, TransactionLimit, Balance)
+                VALUES('%s', '%s', %f, %f)
+                """.formatted(owner, accountNumber, transactionNumLimit, balance)
+        );
     }
 
     public void createSavingAccount(String owner, String accountNumber, double withdrawalLimit, double balance) {
-        Statement statement;
-        try {
-            statement = conn.createStatement();
-            statement.executeUpdate(
-                    """
-                    INSERT INTO SavingsAccounts(Owner, AccountNumber, WithdrawalLimit, Balance)
-                    VALUES('%s', '%s', %f, %f)
-                    """.formatted(owner, accountNumber, withdrawalLimit, balance)
-            );
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
+        executeUpdate(
+                """
+                INSERT INTO SavingsAccounts(Owner, AccountNumber, WithdrawalLimit, Balance)
+                VALUES('%s', '%s', %f, %f)
+                """.formatted(owner, accountNumber, withdrawalLimit, balance)
+        );
+    }
+
+    public ResultSet getAllClientData() {
+        return executeSelect("SELECT * FROM Clients");
     }
 
     /*
     * Utility methods
     * */
-    private ResultSet getLoginData(String username, String password, String sql) {
+    public int getLastClientId() {
+        try (final ResultSet resultSet = executeSelect("SELECT seq FROM sqlite_sequence WHERE name = 'Clients'")) {
+            return resultSet.getInt("seq");
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public ResultSet getAllCheckingAccountData() {
+        return executeSelect("SELECT * FROM CheckingAccounts");
+    }
+
+    public ResultSet getAllSavingAccountData() {
+        return executeSelect("SELECT * FROM SavingsAccounts");
+    }
+
+    public ResultSet getCheckingAccountData(String payeeAddress) {
+        return executeSelect("SELECT * FROM CheckingAccounts WHERE Owner = '%s'".formatted(payeeAddress));
+    }
+
+    public ResultSet getSavingAccountData(String payeeAddress) {
+        return executeSelect("SELECT * FROM SavingsAccounts WHERE Owner = '%s'".formatted(payeeAddress));
+    }
+
+    private ResultSet executeSelect(String sql) {
         Statement statement;
         ResultSet resultSet;
         try {
             statement = conn.createStatement();
-            resultSet = statement.executeQuery(sql.formatted(username, password));
+            resultSet = statement.executeQuery(sql);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
         return resultSet;
     }
 
-    public int getLastClientId() {
+    private void executeUpdate(String sql) {
         Statement statement;
-        ResultSet resultSet;
         try {
             statement = conn.createStatement();
-            resultSet = statement.executeQuery("SELECT seq FROM sqlite_sequence WHERE name = 'Clients'");
-            return resultSet.getInt("seq");
+            statement.executeUpdate(sql);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
