@@ -106,6 +106,30 @@ public class Model {
         }
     }
 
+    public ObservableList<Client> searchClient(String payeeAddress) {
+        final ObservableList<Client> searchResult = FXCollections.observableArrayList();
+        try (final ResultSet clientRs = databaseDriver.searchClient(payeeAddress)) {
+            final String firstName = clientRs.getString("FirstName");
+            final String lastName = clientRs.getString("LastName");
+            final LocalDate dateCreated = DateUtil.parseDate(clientRs.getString("Date"));
+            final CheckingAccount checkingAccount = extractCheckingAccount(databaseDriver.getCheckingAccountData(payeeAddress));
+            final SavingAccount savingAccount = extractSavingAccount(databaseDriver.getSavingAccountData(payeeAddress));
+            searchResult.add(
+                    Client.builder()
+                            .firstName(firstName)
+                            .lastName(lastName)
+                            .payeeAddress(payeeAddress)
+                            .checkingAccount(checkingAccount)
+                            .savingAccount(savingAccount)
+                            .dateCreated(dateCreated)
+                            .build()
+            );
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return searchResult;
+    }
+
     private Map<String, CheckingAccount> extractCheckingAccounts(ResultSet resultSet) {
         Map<String, CheckingAccount> checkingAccountByPayeeAddress = new HashMap<>();
         try {

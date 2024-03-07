@@ -63,6 +63,14 @@ public class DatabaseDriver {
         return executeSelect("SELECT * FROM Clients");
     }
 
+    public ResultSet searchClient(String payeeAddress) {
+        return executeSelect("SELECT * FROM Clients WHERE PayeeAddress = '%s'".formatted(payeeAddress));
+    }
+
+    public void depositSavings(String payeeAddress, double amount) {
+        executeUpdate("UPDATE SavingsAccounts SET Balance = %f WHERE Owner = '%s'".formatted(amount, payeeAddress));
+    }
+
     /*
     * Utility methods
     * */
