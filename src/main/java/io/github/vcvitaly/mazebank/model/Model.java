@@ -77,6 +77,7 @@ public class Model {
     }
 
     private void prepareTransactions(ObservableList<Transaction> transactions, int limit) {
+        transactions.clear();
         try (final ResultSet resultSet = databaseDriver.getTransactions(client.getPayeeAddress().get(), limit)) {
             while (resultSet.next()) {
                 final String sender = resultSet.getString("Sender");

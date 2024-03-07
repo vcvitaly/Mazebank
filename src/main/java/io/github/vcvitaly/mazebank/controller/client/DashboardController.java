@@ -37,6 +37,7 @@ public class DashboardController implements Initializable {
         transactionListview.setItems(Model.getInstance().getLatestTransactions());
         transactionListview.setCellFactory(e -> new TransactionCellFactory());
         sendMoneyBtn.setOnAction(event -> onSendMoney());
+        updateAccountSummary();
     }
 
     private void bindData() {
@@ -61,11 +62,33 @@ public class DashboardController implements Initializable {
         final String message = messageFld.getText();
         Model.getInstance().sendMoney(receiver, amount, message);
         clearFieldsAfterSendingMoney();
+        Model.getInstance().setAllTransactions();
+        Model.getInstance().setLatestTransactions();
+        updateAccountSummary();
     }
 
     private void clearFieldsAfterSendingMoney() {
         payeeFld.setText("");
         amountFld.setText("");
         messageFld.setText("");
+    }
+
+    private void updateAccountSummary() {
+        double income = 0;
+        double expenses = 0;
+        if (Model.getInstance().getAllTransactions().isEmpty()) {
+            Model.getInstance().setAllTransactions();
+        }
+        final String payeeAddress = Model.getInstance().getClient().getPayeeAddress().get();
+        for (Transaction transaction : Model.getInstance().getAllTransactions()) {
+            final double amount = transaction.getAmount().get();
+            if (transaction.getSender().get().equals(payeeAddress)) {
+                expenses += amount;
+            } else {
+                income += amount;
+            }
+        }
+        incomeLbl.setText("+ $" + income);
+        expensesLbl.setText("- $" + expenses);
     }
 }
