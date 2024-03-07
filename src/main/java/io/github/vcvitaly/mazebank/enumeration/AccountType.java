@@ -7,11 +7,13 @@ import java.util.Arrays;
 
 @RequiredArgsConstructor
 public enum AccountType {
-    CLIENT("Client"),
-    ADMIN("Admin");
+    CLIENT("Client", "Payee address"),
+    ADMIN("Admin", "Username");
 
     @Getter
     private final String value;
+    @Getter
+    private final String label;
 
     public static AccountType ofValue(String value) {
         return Arrays.stream(values())

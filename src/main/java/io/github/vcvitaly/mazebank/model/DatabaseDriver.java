@@ -21,24 +21,28 @@ public class DatabaseDriver {
     * Client section
     * */
     public ResultSet getClientData(String payeeAddress, String password) {
-        Statement statement;
-        ResultSet resultSet;
-        try {
-            statement = conn.createStatement();
-            resultSet = statement.executeQuery(
-                            "SELECT * FROM Clients WHERE PayeeAddress = '%s' AND Password = '%s'".formatted(payeeAddress, password)
-                    );
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-        return resultSet;
+        return getLoginData(payeeAddress, password, "SELECT * FROM Clients WHERE PayeeAddress = '%s' AND Password = '%s'");
     }
 
     /*
     * Admin section
     * */
+    public ResultSet getAdminData(String username, String password) {
+        return getLoginData(username, password, "SELECT * FROM Admins WHERE Username = '%s' AND Password = '%s'");
+    }
 
     /*
     * Utility methods
     * */
+    private ResultSet getLoginData(String username, String password, String sql) {
+        Statement statement;
+        ResultSet resultSet;
+        try {
+            statement = conn.createStatement();
+            resultSet = statement.executeQuery(sql.formatted(username, password));
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return resultSet;
+    }
 }

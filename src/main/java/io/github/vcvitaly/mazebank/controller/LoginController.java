@@ -4,6 +4,7 @@ import io.github.vcvitaly.mazebank.enumeration.AccountType;
 import io.github.vcvitaly.mazebank.model.Model;
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.function.BiPredicate;
 import javafx.collections.FXCollections;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
@@ -28,37 +29,57 @@ public class LoginController implements Initializable {
                 AccountType.CLIENT.getValue(), AccountType.ADMIN.getValue()
         ));
         accSelector.setValue(Model.getInstance().getViewFactory().getLoginAccountType().getValue());
-        accSelector.valueProperty().addListener(
-                observable -> Model.getInstance().getViewFactory().setLoginAccountType(
-                        AccountType.ofValue(accSelector.getValue())
-                )
-        );
+        accSelector.valueProperty().addListener(observable -> setAccSelector());
         loginBtn.setOnAction(event -> onLogin());
     }
 
     private void onLogin() {
-        Stage loginStage = (Stage) errorLbl.getScene().getWindow();
-        AccountType loginAccountType = Model.getInstance().getViewFactory().getLoginAccountType();
-        if (loginAccountType == AccountType.CLIENT) {
-            final String payeeAddress = payeeAddressFld.getText();
-            final String password = passwordFld.getText();
-            if (payeeAddress.isBlank() || password.isBlank()) {
-                errorLbl.setText("Both payee address and password should not be empty");
-            } else {
-                Model.getInstance().evaluateClientCredentials(payeeAddress, password);
-                if (Model.getInstance().isClientLoginSucceeded()) {
-                    Model.getInstance().getViewFactory().showClientWindow();
-                    Model.getInstance().getViewFactory().closeStage(loginStage);
-                } else {
-                    payeeAddressFld.setText("");
-                    passwordFld.setText("");
-                    errorLbl.setText("Unknown client credentials");
-                }
-            }
-        } else if (loginAccountType == AccountType.ADMIN) {
-            Model.getInstance().getViewFactory().showAdminWindow();
+        final AccountType loginAccountType = Model.getInstance().getViewFactory().getLoginAccountType();
+        final String payeeAddress = payeeAddressFld.getText();
+        final String password = passwordFld.getText();
+        if (payeeAddress.isBlank() || password.isBlank()) {
+            errorLbl.setText("Both payee address and password should not be empty");
         } else {
-            throw new IllegalArgumentException("Unknown login account type: " + loginAccountType);
+            if (loginAccountType == AccountType.CLIENT) {
+                handleSuccessfulLogin(
+                        payeeAddress,
+                        password,
+                        (username, pass) -> Model.getInstance().evaluateClientCredentials(username, pass),
+                        () -> Model.getInstance().getViewFactory().showClientWindow()
+                );
+            } else if (loginAccountType == AccountType.ADMIN) {
+                handleSuccessfulLogin(
+                        payeeAddress,
+                        password,
+                        (username, pass) -> Model.getInstance().evaluateAdminCredentials(username, pass),
+                        () -> Model.getInstance().getViewFactory().showAdminWindow()
+                );
+            } else {
+                throw new IllegalArgumentException("Unknown login account type: " + loginAccountType);
+            }
         }
+    }
+
+    private void handleSuccessfulLogin(
+            String payeeAddress,
+            String password,
+            BiPredicate<String, String> credentialEvaluator,
+            Runnable windowRunnable
+            ) {
+        final Stage loginStage = (Stage) errorLbl.getScene().getWindow();
+        if (credentialEvaluator.test(payeeAddress, password)) {
+            windowRunnable.run();
+            Model.getInstance().getViewFactory().closeStage(loginStage);
+        } else {
+            payeeAddressFld.setText("");
+            passwordFld.setText("");
+            errorLbl.setText("Unknown login credentials");
+        }
+    }
+
+    private void setAccSelector() {
+        final AccountType accountType = AccountType.ofValue(accSelector.getValue());
+        Model.getInstance().getViewFactory().setLoginAccountType(accountType);
+        payeeAddressLbl.setText("%s:".formatted(accountType.getLabel()));
     }
 }
