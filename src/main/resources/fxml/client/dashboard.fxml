@@ -23,7 +23,7 @@
          text="My accounts" AnchorPane.leftAnchor="20.0" AnchorPane.topAnchor="90.0"/>
    <Text layoutX="801.0" layoutY="66.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="section-title"
          text="Accounts summary" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="90.0"/>
-   <Label layoutX="795.0" layoutY="14.0" styleClass="date-lbl" text="Today, 2024-03-03" AnchorPane.rightAnchor="14.0"
+   <Label fx:id="dateLbl" layoutX="795.0" layoutY="14.0" styleClass="date-lbl" text="Today, 2024-03-03" AnchorPane.rightAnchor="14.0"
           AnchorPane.topAnchor="30.0"/>
    <HBox prefHeight="180.0" prefWidth="620.0" styleClass="accounts-view" AnchorPane.leftAnchor="20.0"
          AnchorPane.topAnchor="120.0">
