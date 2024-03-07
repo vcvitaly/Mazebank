@@ -7,6 +7,7 @@ import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
+import lombok.Builder;
 import lombok.Getter;
 
 @Getter
@@ -17,6 +18,7 @@ public class Transaction {
     private final ObjectProperty<LocalDate> date;
     private final StringProperty message;
 
+    @Builder
     public Transaction(String sender, String receiver, double amount, LocalDate date, String message) {
         this.sender = new SimpleStringProperty(this, "sender", sender);
         this.receiver = new SimpleStringProperty(this, "receiver", receiver);

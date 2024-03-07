@@ -25,6 +25,12 @@ public class DatabaseDriver {
         return executeSelect("SELECT * FROM Clients WHERE PayeeAddress = '%s' AND Password = '%s'".formatted(payeeAddress, password));
     }
 
+    public ResultSet getTransactions(String payeeAddress, int limit) {
+        return executeSelect(
+                "SELECT * FROM Transactions WHERE Sender = '%s' OR Receiver = '%s' LIMIT %d".formatted(payeeAddress, payeeAddress, limit)
+        );
+    }
+
     /*
     * Admin section
     * */

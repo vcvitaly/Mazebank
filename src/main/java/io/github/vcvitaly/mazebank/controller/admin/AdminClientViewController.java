@@ -14,12 +14,12 @@ public class AdminClientViewController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        initData();
+        initClientList();
         clientsListview.setItems(Model.getInstance().getClients());
         clientsListview.setCellFactory(e -> new ClientCellFactory());
     }
 
-    private void initData() {
+    private void initClientList() {
         if (Model.getInstance().getClients().isEmpty()) {
             Model.getInstance().setClients();
         }

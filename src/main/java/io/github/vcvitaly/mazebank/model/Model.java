@@ -14,6 +14,8 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 public class Model {
+    private static final int LATEST_TRANSACTIONS_LIMIT = 4;
+    private static final int NO_LIMIT_CONST = -1;
     @Getter
     private final ViewFactory viewFactory;
     @Getter
@@ -21,6 +23,10 @@ public class Model {
     // Client data section
     @Getter
     private final Client client;
+    @Getter
+    private final ObservableList<Transaction> latestTransactions;
+    @Getter
+    private final ObservableList<Transaction> allTransactions;
     // Admin section data
     @Getter
     private final ObservableList<Client> clients;
@@ -30,6 +36,8 @@ public class Model {
         databaseDriver = new DatabaseDriver();
         // Client data section
         client = new Client("", "", "", null, null, null);
+        latestTransactions = FXCollections.observableArrayList();
+        allTransactions = FXCollections.observableArrayList();
         // Admin data section
         clients = FXCollections.observableArrayList();
     }
@@ -58,6 +66,37 @@ public class Model {
             throw new RuntimeException(e);
         }
         return false;
+    }
+    
+    public void setLatestTransactions() {
+        prepareTransactions(latestTransactions, LATEST_TRANSACTIONS_LIMIT);
+    }
+
+    public void setAllTransactions() {
+        prepareTransactions(allTransactions, NO_LIMIT_CONST);
+    }
+
+    private void prepareTransactions(ObservableList<Transaction> transactions, int limit) {
+        try (final ResultSet resultSet = databaseDriver.getTransactions(client.getPayeeAddress().get(), limit)) {
+            while (resultSet.next()) {
+                final String sender = resultSet.getString("Sender");
+                final String receiver = resultSet.getString("Receiver");
+                final double amount = resultSet.getDouble("Amount");
+                final LocalDate date = DateUtil.parseDate(resultSet.getString("Date"));
+                final String message = resultSet.getString("Message");
+                transactions.add(
+                        Transaction.builder()
+                                .sender(sender)
+                                .receiver(receiver)
+                                .amount(amount)
+                                .date(date)
+                                .message(message)
+                                .build()
+                );
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     // Admin method section
