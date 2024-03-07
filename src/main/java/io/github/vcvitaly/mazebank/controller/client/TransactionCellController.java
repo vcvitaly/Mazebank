@@ -1,12 +1,14 @@
 package io.github.vcvitaly.mazebank.controller.client;
 
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
+import io.github.vcvitaly.mazebank.model.Model;
 import io.github.vcvitaly.mazebank.model.Transaction;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 
 import java.net.URL;
 import java.util.ResourceBundle;
+import javafx.scene.paint.Color;
 
 public class TransactionCellController implements Initializable {
     public FontAwesomeIconView inIcon;
@@ -32,5 +34,17 @@ public class TransactionCellController implements Initializable {
         senderLbl.textProperty().bind(transaction.getSender());
         receiverLbl.textProperty().bind(transaction.getReceiver());
         amountLbl.textProperty().bind(transaction.getAmount().asString());
+        updateTransactionIcons();
+    }
+
+    private void updateTransactionIcons() {
+        final String payeeAddress = Model.getInstance().getClient().getPayeeAddress().get();
+        if (transaction.getSender().get().equals(payeeAddress)) {
+            outIcon.setFill(Color.RED);
+            inIcon.setFill(Color.LIGHTGREY);
+        } else {
+            inIcon.setFill(Color.GREEN);
+            outIcon.setFill(Color.LIGHTGREY);
+        }
     }
 }
