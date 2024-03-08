@@ -10,9 +10,14 @@ import io.github.vcvitaly.mazebank.util.ResourceUtil;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
+import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -95,6 +100,24 @@ public class ViewFactory {
         createStageAndShow(MainFxmlView.ADMIN);
     }
 
+    public void showTransactionMessageWindow(String senderAddress, String message) {
+        StackPane pane = new StackPane();
+        VBox vBox = new VBox(5);
+        vBox.setAlignment(Pos.CENTER);
+        Label senderLbl = new Label(senderAddress);
+        Label messageLbl = new Label(message);
+        vBox.getChildren().addAll(senderLbl, messageLbl);
+        pane.getChildren().add(vBox);
+        Scene scene = new Scene(pane, 300, 100);
+        Stage stage = new Stage();
+        stage.getIcons().add(getMazebankIcon());
+        stage.setResizable(false);
+        stage.initModality(Modality.APPLICATION_MODAL);
+        stage.setTitle("Message");
+        stage.setScene(scene);
+        stage.show();
+    }
+
     public void closeStage(Stage stage) {
         stage.close();
     }
@@ -109,14 +132,16 @@ public class ViewFactory {
         }
         Stage stage = new Stage();
         stage.setScene(scene);
-        stage.getIcons().add(
-                new Image(
-                        ResourceUtil.getResource(ImageResource.APP_ICON.getResourcePath()).toString()
-                )
-        );
+        stage.getIcons().add(getMazebankIcon());
         stage.setResizable(false);
         stage.setTitle("Maze Bank");
         stage.show();
         log.info("Shown " + fxmlView);
+    }
+
+    private Image getMazebankIcon() {
+        return new Image(
+                ResourceUtil.getResource(ImageResource.APP_ICON.getResourcePath()).toString()
+        );
     }
 }
